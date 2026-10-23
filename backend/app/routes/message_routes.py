@@ -57,9 +57,9 @@ def message_detail(request: Request, message_id: int):
         FROM messages m
         JOIN users s ON s.id = m.sender_id
         JOIN users r ON r.id = m.recipient_id
-        WHERE m.id=%s
+        WHERE m.id=%s AND m.recipient_id=%s
         """,
-        (message_id,),
+        (message_id,user["id"],),
         fetchone=True,
     )
     return templates.TemplateResponse("message_detail.html", {"request": request, "user": user, "message": message})
