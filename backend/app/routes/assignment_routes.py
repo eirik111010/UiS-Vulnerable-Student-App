@@ -57,6 +57,14 @@ def upload_assignment(
 
 
 @router.get("/uploads/{filename}")
-def get_upload(filename: str):
-    path = os.path.join(UPLOAD_DIR, filename)
-    return FileResponse(path)
+def get_upload(filename: str, request: Request):
+    user = get_user_from_session(request)
+    submissions = run_query(
+            "SELECT * FROM submissions WHERE user_id=%s AND filename=%s",
+            (user["id"],filename),
+            fetchall=True,
+    )
+    if submissions:
+        path = os.path.join(UPLOAD_DIR, filename)
+        return FileResponse(path)
+    
