@@ -50,7 +50,6 @@ def message_detail(request: Request, message_id: int):
     user = get_user_from_session(request)
     if not user:
         return RedirectResponse("/login", status_code=302)
-
     message = run_query(
         """
         SELECT m.*, s.full_name as sender_name, r.full_name as recipient_name

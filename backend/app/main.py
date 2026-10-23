@@ -14,7 +14,8 @@ from app.routes import (
 app = FastAPI(title="DAT250 SecureApp", debug=True)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
-app.mount("/uploads", StaticFiles(directory="app/uploads"), name="uploads")
+#app.mount("/uploads", StaticFiles(directory="app/uploads"), name="uploads")
+
 
 app.include_router(auth_routes.router)
 app.include_router(profile_routes.router)
@@ -24,3 +25,5 @@ app.include_router(grade_routes.router)
 app.include_router(message_routes.router)
 app.include_router(admin_routes.router)
 app.include_router(utility_routes.router)
+
+
