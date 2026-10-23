@@ -57,6 +57,22 @@ def upload_assignment(
 
 
 @router.get("/uploads/{filename}")
-def get_upload(filename: str):
+def get_upload(filename: str,request: Request):
+    user = get_user_from_session(request)
+
+
+    submission = run_query(
+        """
+        SELECT * FROM submissions WHERE user_id=%s AND file_path=%s
+        """,
+        (user["id"], filename),
+        fetchone=True,
+    )
+    
+    if not submission:
+        return RedirectResponse("/assignments", status_code=404)
+    
+
     path = os.path.join(UPLOAD_DIR, filename)
     return FileResponse(path)
+    

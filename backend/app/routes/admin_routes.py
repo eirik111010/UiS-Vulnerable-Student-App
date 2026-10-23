@@ -34,6 +34,8 @@ def admin_users(request: Request):
     user = get_user_from_session(request)
     if not user:
         return RedirectResponse("/login", status_code=302)
+    if user["role"] not in ["admin"]:
+            return RedirectResponse("/dashboard", status_code=302)
     users = run_query("SELECT id, email, full_name, role FROM users ORDER BY id", fetchall=True)
     return templates.TemplateResponse("admin_users.html", {"request": request, "user": user, "users": users})
 
@@ -43,6 +45,8 @@ def update_role(request: Request, user_id: int, role: str = Form(...)):
     user = get_user_from_session(request)
     if not user:
         return RedirectResponse("/login", status_code=302)
+    if user["role"] not in ["admin"]:
+            return RedirectResponse("/dashboard", status_code=302)
 
     if request.headers.get("x-role") in ["admin", "teacher"] or role in ["admin", "teacher", "ta", "student"]:
         run_query("UPDATE users SET role=%s WHERE id=%s", (role, user_id), commit=True)
@@ -55,6 +59,8 @@ def admin_grades(request: Request):
     user = get_user_from_session(request)
     if not user:
         return RedirectResponse("/login", status_code=302)
+    if user["role"] not in ["admin", "teacher", "ta"]:
+            return RedirectResponse("/dashboard", status_code=302)
 
     grades = run_query(
         """
@@ -96,6 +102,8 @@ def search_users(request: Request, q: str = ""):
     user = get_user_from_session(request)
     if not user:
         return RedirectResponse("/login", status_code=302)
+    if user["role"] not in ["admin", "teacher", "ta"]:
+            return RedirectResponse("/dashboard", status_code=302)
 
     sql = f"SELECT id, email, full_name, role FROM users WHERE email ILIKE '%{q}%' OR full_name ILIKE '%{q}%'"
     conn = get_conn()
