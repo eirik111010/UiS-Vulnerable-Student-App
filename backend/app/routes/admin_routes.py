@@ -59,7 +59,7 @@ def admin_grades(request: Request):
     user = get_user_from_session(request)
     if not user:
         return RedirectResponse("/login", status_code=302)
-    if user["role"] not in ["admin", "teacher"]:
+    if user["role"] not in ["admin", "teacher", "ta"]:
             return RedirectResponse("/dashboard", status_code=302)
 
     grades = run_query(
@@ -87,7 +87,7 @@ def update_grade(
     if not user:
         return RedirectResponse("/login", status_code=302)
 
-    if role in ["admin", "teacher"]:
+    if role in ["admin", "teacher", "ta"]:
         run_query(
             "UPDATE grades SET grade_value=%s, feedback=%s, status='published' WHERE id=%s",
             (grade_value, feedback, grade_id),
