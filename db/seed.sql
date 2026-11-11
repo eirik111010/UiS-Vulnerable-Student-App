@@ -35,10 +35,6 @@ INSERT INTO assignments (id, course_id, title, description, deadline) VALUES
 (4, 1, 'Assignment 4: Secure Coding Practices', 'Patch vulnerable code and retest.', NOW() + INTERVAL '28 day')
 ON CONFLICT (id) DO NOTHING;
 
-INSERT INTO submissions (assignment_id, user_id, filename, file_path, notes) VALUES
-(1, 4, 'owasp_report_alice.pdf', '4_1_owasp_report_alice.pdf', 'Initial report draft'),
-(1, 5, 'owasp_report_bob.pdf', '5_1_owasp_report_bob.pdf', 'Draft'),
-(2, 6, 'auth_notes_charlie.docx', '6_2_auth_notes_charlie.docx', 'Access control notes');
 
 INSERT INTO grades (assignment_id, student_id, grader_id, grade_value, feedback, status) VALUES
 (1, 4, 2, 'B+', 'Good structure, include more trace evidence.', 'published'),
