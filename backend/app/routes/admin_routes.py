@@ -102,7 +102,7 @@ def search_users(request: Request, q: str = ""):
     user = get_user_from_session(request)
     if not user:
         return RedirectResponse("/login", status_code=302)
-    if user["role"] not in ["admin", "teacher", "ta"]:
+    if user["role"] not in ["admin"]:
             return RedirectResponse("/dashboard", status_code=302)
 
     sql = f"SELECT id, email, full_name, role FROM users WHERE email ILIKE '%{q}%' OR full_name ILIKE '%{q}%'"
